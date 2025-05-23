@@ -5,6 +5,7 @@ import {
   Route,
   useNavigate,
 } from "react-router-dom";
+import "./App.css";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Upload from "./components/Upload";

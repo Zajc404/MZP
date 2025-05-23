@@ -1,42 +1,97 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Uproszczony CSS do layoutu */
+
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0e0e10;
+  color: #fff;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.left-image {
+  flex: 3; /* 3/5 szerokości */
+  height: 100vh;
+  width: 100%;
+  background-image: url('./images/Background.jpg');
+  background-size: cover;       /* obraz dopasowany, zakrywa cały obszar */
+  background-position: center;  /* centrowanie obrazu */
+  background-repeat: no-repeat; /* zapobiega powtarzaniu */
+}
+
+
+.auth-wrapper {
+  flex: 2; /* zajmuje 2/5 szerokości */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0e0e10;
+}
+
+
+.auth-box {
+  background-color: #1a1a1d;
+  padding: 2rem 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  color: #aaa;
+  margin-bottom: 1.5rem;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 9999px;
+  background: #2a2a2d;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.auth-input::placeholder {
+  color: #777;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #ffffff;
+  color: #0e0e10;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #dddddd;
+}
+
+.auth-footer {
+  margin-top: 1rem;
+  font-size: 0.9rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.auth-footer a {
+  color: #ffffff;
+  text-decoration: underline;
 }

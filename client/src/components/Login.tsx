@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./../App.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,26 +25,46 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <br />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <button onClick={handleLogin}>Login</button>
-      <p>
-        Don't have an account? <a href="/register">Register</a>
-      </p>
+    <div className="container">
+      <div className="left-image" />
+      <div className="auth-wrapper">
+        <div
+          style={{
+            position: "absolute",
+            top: "7rem",
+            textAlign: "center",
+            width: "20%",
+          }}
+        >
+          <h1 style={{ fontSize: "2rem", color: "#fff" }}>
+            Mechatroniczny Projekt Zespołowy
+          </h1>
+        </div>
+        <div className="auth-box">
+          <h2 className="auth-title">Sign In</h2>
+          <p className="auth-subtitle">Welcome back. Please log in.</p>
+          <input
+            className="auth-input"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            className="auth-input"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="auth-button" onClick={handleLogin}>
+            Log In
+          </button>
+          <p className="auth-footer">
+            Don't have an account? <a href="/register">Register</a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

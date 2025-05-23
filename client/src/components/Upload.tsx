@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./../App.css";
 
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -49,20 +50,45 @@ const Upload = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Upload your MP3</h2>
-      <input
-        type="file"
-        accept="audio/mpeg"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-      />
-      <button onClick={handleUpload}>Upload</button>
-      {audioUrl && (
-        <div>
-          <h3>Your uploaded audio:</h3>
-          <audio controls src={audioUrl} />
+    <div className="container">
+      <div className="left-image" />
+      <div className="auth-wrapper">
+        <div
+          style={{
+            position: "absolute",
+            top: "7rem",
+            textAlign: "center",
+            width: "20%",
+          }}
+        >
+          <h1 style={{ fontSize: "2rem", color: "#fff" }}>
+            Mechatroniczny Projekt Zespołowy
+          </h1>
         </div>
-      )}
+        <div className="auth-box">
+          <h2 className="auth-title">Upload MP3</h2>
+          <p className="auth-subtitle">Choose a file to upload.</p>
+
+          <input
+            className="auth-input"
+            type="file"
+            accept="audio/mpeg"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+            style={{ padding: "0.5rem 1rem", backgroundColor: "#2a2a2d" }}
+          />
+
+          <button className="auth-button" onClick={handleUpload}>
+            Upload
+          </button>
+
+          {audioUrl && (
+            <div style={{ marginTop: "1.5rem" }}>
+              <h3 style={{ marginBottom: "0.5rem" }}>Your uploaded audio:</h3>
+              <audio controls src={audioUrl} style={{ width: "100%" }} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
