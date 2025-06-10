@@ -6,6 +6,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
+
 const app = express();
 const PORT = 5000;
 
@@ -19,6 +20,7 @@ const UserSchema = new mongoose.Schema({
   passwordHash: String,
   refreshToken: String,
 });
+
 const User = mongoose.model('User', UserSchema);
 
 const accessSecret = 'ACCESS_SECRET';
@@ -45,6 +47,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+// === REJESTRACJA & LOGOWANIE ===
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
   const existing = await User.findOne({ username });
@@ -62,10 +65,12 @@ app.post('/login', async (req, res) => {
   if (!user || !await bcrypt.compare(password, user.passwordHash)) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
+
   const accessToken = jwt.sign({ username }, accessSecret, { expiresIn: '15m' });
   const refreshToken = jwt.sign({ username }, refreshSecret);
   user.refreshToken = refreshToken;
   await user.save();
+
   res.json({ accessToken, refreshToken });
 });
 
@@ -89,6 +94,7 @@ app.post('/logout', async (req, res) => {
   res.sendStatus(204);
 });
 
+// === UPLOAD MP3 ===
 app.post('/upload', authenticateToken, upload.single('file'), (req, res) => {
   res.sendStatus(200);
 });
@@ -99,13 +105,39 @@ app.get('/audio', authenticateToken, (req, res) => {
   res.sendFile(filePath);
 });
 
-app.get('/esp/:username', async (req, res) => {
-  const { username } = req.params;
-  const user = await User.findOne({ username });
-  if (!user) return res.sendStatus(404);
+// === OBSŁUGA ESP32 ===
+app.post('/esp', (req, res) => {
+  console.log('ESP32 req body:', req.body);
+  const { username } = req.body;
+
+   if (!username) {
+     return res.status(404).json({ error: 'Użytkownik nieznany' });
+   }
+
   const filePath = path.join(__dirname, 'uploads', `${username}.mp3`);
-  if (!fs.existsSync(filePath)) return res.sendStatus(404);
-  res.sendFile(filePath);
+   if (!fs.existsSync(filePath)) {
+     return res.status(404).json({ error: 'Plik nie istnieje' });
+   }
+
+  // Zwracamy URL do streamu dla ESP
+  const streamUrl = `http://172.20.10.5:5000/stream/${username}.mp3`;
+  res.json({ url: streamUrl });
+});
+
+app.get('/stream/:username', (req, res) => {
+  const { username } = req.params;
+  const filePath = path.join(__dirname, 'uploads', `${username}.mp3`);
+  if (!fs.existsSync(filePath)) return res.status(404).send('File not found');
+
+  const stat = fs.statSync(filePath);
+  res.writeHead(200, {
+    'Content-Type': 'audio/mpeg',
+    'Content-Length': stat.size,
+    'Accept-Ranges': 'bytes'
+  });
+
+  const readStream = fs.createReadStream(filePath);
+  readStream.pipe(res);
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
