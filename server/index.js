@@ -120,7 +120,7 @@ app.post('/esp', (req, res) => {
    }
 
   // Zwracamy URL do streamu dla ESP
-  const streamUrl = `http://172.20.10.5:5000/stream/${username}.mp3`;
+  const streamUrl = `http://ip-v4:5000/stream/${username}.mp3`;
   res.json({ url: streamUrl });
 });
 
