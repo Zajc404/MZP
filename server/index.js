@@ -112,20 +112,25 @@ app.post('/esp', (req, res) => {
 
    if (!username) {
      return res.status(404).json({ error: 'Użytkownik nieznany' });
+   }else{
+      console.log(`ESP32 request for user: ${username}`);
    }
 
   const filePath = path.join(__dirname, 'uploads', `${username}.mp3`);
    if (!fs.existsSync(filePath)) {
      return res.status(404).json({ error: 'Plik nie istnieje' });
-   }
+   }else{
+      console.log(`File exists for user: ${username}`);
+    }
 
   // Zwracamy URL do streamu dla ESP
-  const streamUrl = `http://172.20.10.5:5000/stream/${username}.mp3`;
+  const streamUrl = `http://10.1.245.12:5000/stream/${username}`;
   res.json({ url: streamUrl });
 });
 
 app.get('/stream/:username', (req, res) => {
   const { username } = req.params;
+  console.log(`Stream request for user: ${username}`);
   const filePath = path.join(__dirname, 'uploads', `${username}.mp3`);
   if (!fs.existsSync(filePath)) return res.status(404).send('File not found');
 
